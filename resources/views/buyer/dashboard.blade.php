@@ -152,7 +152,7 @@
 							</li>
 						</ul>
 					</div>
-
+					cart
 					<div class="filter-col3 p-r-15 p-b-27">
 						<div class="mtext-102 cl2 p-b-15">
 							Color
@@ -261,7 +261,7 @@
 						<img src="{{ asset('assets/images/items/' . $item->image) }}" alt="IMG-PRODUCT">
 
 						<a href="{{route('buyer.product_details', $item->id)}}" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
-							Quick View
+							Item Details
 						</a>
 					</div>
 
@@ -279,10 +279,19 @@
 						</div>
 
 						<div class="block2-txt-child2 flex-r p-t-3">
-							<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+							<!-- <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
 								<img class="icon-heart1 dis-block trans-04" src="{{asset('assets')}}/images/icons/icon-heart-01.png" alt="ICON">
 								<img class="icon-heart2 dis-block trans-04 ab-t-l" src="{{asset('assets')}}/images/icons/icon-heart-02.png" alt="ICON">
-							</a>
+							</a> -->
+						    @if(in_array($item->id, $wishlist) )
+                                <button onclick="deleteConfirmation({{$item->id}})" type="submit" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Remove from Wishlist">
+                                    <i class="zmdi zmdi-favorite" style='color: red'></i>
+                                </button>                                 
+                            @else
+                                <button onclick="addtoWishlist({{$item->id}})" type="submit" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
+                                    <i class="zmdi zmdi-favorite"></i>
+                                </button>
+                            @endif
 						</div>
 					</div>
 				</div>
@@ -298,4 +307,81 @@
 		</div>
 	</div>
 </section>
+
+<script>
+		//add to  Wishlist
+            function addtoWishlist($id){	
+				$.ajaxSetup({
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   }
+                });
+                event.preventDefault();
+
+               
+                var url = "{{route('buyer.add_to_wishlist')}}";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        id: $id,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response) {
+                           
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: '{{$item->name}} added in your wishlist!',
+                           
+                            })
+                            window.location.reload();
+                            
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong!',
+                                
+                            })
+                        }
+                       
+                    }
+                });
+            
+		    }
+
+	    //Remove from wishlist
+		function deleteConfirmation($id){
+			$.ajaxSetup({
+                   headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                   }
+                });
+			event.preventDefault();
+
+			var url = "{{route('buyer.product_remove_wishlist',['_id_'])}}";
+			var delete_url = url.replace(['_id_'], $id);
+
+			$.ajax({
+
+				url: delete_url,
+				type: 'DELETE',
+				dataType: 'json',
+				success: function(response) {
+					Swal.fire({
+						icon: 'success',
+						title: 'Success!',
+						text: 'Product removed from Wishlist successfully!',
+					})
+					window.location.reload();
+				}
+			});
+			
+        }
+		
+       
+    </script>
 @endsection

@@ -34,6 +34,9 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('assets')}}/css/util.css">
 	<link rel="stylesheet" type="text/css" href="{{asset('assets')}}/css/main.css">
 <!--===============================================================================================-->
+
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+
 </head>
 <body class="animsition">
 	
@@ -116,7 +119,7 @@
 							<i class="zmdi zmdi-shopping-cart"></i>
 						</div>
 
-						<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+						<a href="{{route('buyer.wishlist')}}" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="{{$count_wishlists}}">
 							<i class="zmdi zmdi-favorite-outline"></i>
 						</a>
 					</div>
@@ -304,7 +307,7 @@
 					</div>
 
 					<div class="header-cart-buttons flex-w w-full">
-						<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
+						<a href="{{route('buyer.cart')}}" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
 							View Cart
 						</a>
 
@@ -339,7 +342,7 @@
 							</div>
 								
 							<div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-								<a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+								<a href="{{route('buyer.all_products')}}" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 									Shop Now
 								</a>
 							</div>

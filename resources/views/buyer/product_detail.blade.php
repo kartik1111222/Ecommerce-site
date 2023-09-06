@@ -35,6 +35,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets')}}/css/util.css">
     <link rel="stylesheet" type="text/css" href="{{asset('assets')}}/css/main.css">
     <!--===============================================================================================-->
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
 
 <body class="animsition">
@@ -117,7 +118,7 @@
                             <i class="zmdi zmdi-shopping-cart"></i>
                         </div>
 
-                        <a href="#" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+                        <a href="{{route('buyer.wishlist')}}" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="{{$count_wishlists}}">
                             <i class="zmdi zmdi-favorite-outline"></i>
                         </a>
                     </div>
@@ -189,11 +190,6 @@
             <ul class="main-menu-m">
                 <li>
                     <a href="index.html">Home</a>
-                    <!-- <ul class="sub-menu-m">
-						<li><a href="index.html">Homepage 1</a></li>
-						<li><a href="home-02.html">Homepage 2</a></li>
-						<li><a href="home-03.html">Homepage 3</a></li>
-					</ul> -->
                     <span class="arrow-main-menu-m">
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </span>
@@ -323,53 +319,53 @@
         </div>
     </div>
 
+
+
     <div class="container">
         <div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
-            <form action="{{route('buyer.add_to_wishlist')}}" method="POST" id="wishlist_form">
-                @csrf
-                <input type="hidden" name="id" value="{{$item->id}}" id="id">
-                <div class="row">
-                    <div class="col-md-6 col-lg-7 p-b-30">
-                        <div class="p-l-25 p-r-30 p-lr-0-lg">
-                            <div class="wrap-slick3 flex-sb flex-w">
-                                <!-- <div class="wrap-slick3-dots"></div> -->
-                                <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+            <button class="how-pos3 hov3 trans-04 js-hide-modal1">
+                <img src="{{asset('assets')}}/images/icons/icon-close.png" alt="CLOSE">
+            </button>
 
-                                <div class="slick3 gallery-lb">
-                                    <div>
-                                        <div class="wrap-pic-w pos-relative">
-                                            <img src="{{ asset('assets/images/items/' . $item->image) }}" alt="IMG-PRODUCT">
+            <div class="row">
+                <div class="col-md-6 col-lg-7 p-b-30">
+                    <div class="p-l-25 p-r-30 p-lr-0-lg">
+                        <div class="wrap-slick3 flex-sb flex-w">
+                            <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
 
-                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{asset('assets/images/items/' . $item->image)}}">
-                                                <i class="fa fa-expand"></i>
-                                            </a>
-                                        </div>
+                            <div class="slick3 gallery-lb">
+                                <div class="item-slick3">
+                                    <div class="wrap-pic-w pos-relative">
+                                        <img src="{{asset('assets/images/items/'. $item->image)}}" alt="IMG-PRODUCT">
+
+                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{asset('assets/images/items/'. $item->image)}}">
+                                            <i class="fa fa-expand"></i>
+                                        </a>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-md-6 col-lg-5 p-b-30">
-                        <div class="p-r-50 p-t-5 p-lr-0-lg">
-                            <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-                                {{$item->name}}
-                            </h4>
+                <div class="col-md-6 col-lg-5 p-b-30">
+                    <div class="p-r-50 p-t-5 p-lr-0-lg">
+                        <h4 class="mtext-105 cl2 js-name-detail p-b-14">
+                            {{$item->name}}
+                        </h4>
 
-                            <span class="mtext-106 cl2">
-                                ₹ {{$item->price}} Only.
-                            </span>
+                        <span class="mtext-106 cl2">
+                            ₹ {{$item->price}}
+                        </span>
 
-                            <p class="stext-102 cl3 p-t-23">
-                                {{$item->description}}
-                            </p>
+                        <p class="stext-102 cl3 p-t-23">
+                            {{$item->description}}
+                        </p>
 
-                            <!--  -->
+                        <form method="POST" action="">
+                            @csrf
+                            <input type="hidden" name="id" id="id" value="{{$item->id}}">
                             <div class="p-t-33">
-
-
                                 <div class="flex-w flex-r-m p-b-10">
                                     <div class="size-204 flex-w flex-m respon6-next">
                                         <div class="wrap-num-product flex-w m-r-20 m-tb-10">
@@ -377,28 +373,46 @@
                                                 <i class="fs-16 zmdi zmdi-minus"></i>
                                             </div>
 
-                                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
+                                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="product-qty" value="1" id="product_qty">
 
                                             <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                                 <i class="fs-16 zmdi zmdi-plus"></i>
                                             </div>
                                         </div>
 
-                                        <button type="submit" id="wishlist" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
-                                            <i class="zmdi zmdi-favorite"></i>
-                                        </button>
-                                        <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                        <button onclick="addCart({{$item->id}})" type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
                                             Add to cart
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
+
+                        <form action="" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" id="id" value="{{$item->id}}">
+
+                            <div class="flex-w flex-m p-l-100 p-t-40 respon7">
+                                <div class="flex-m bor9 p-r-10 m-r-11">
+
+                                    @if(in_array($item->id, $wishlist) )
+                                    <button onclick="deleteConfirmation({{$item->id}})" type="submit" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Remove from Wishlist">
+                                        <i class="zmdi zmdi-favorite" style='color: red'></i>
+                                    </button>
+                                    @else
+                                    <button id="wishlist" type="submit" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
+                                        <i class="zmdi zmdi-favorite"></i>
+                                    </button>
+                                    @endif
+
+
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
     </div>
 
     <!-- Footer -->
@@ -549,93 +563,7 @@
     </footer>
 
 
-    <!-- Back to top -->
-    <div class="btn-back-to-top" id="myBtn">
-        <span class="symbol-btn-back-to-top">
-            <i class="zmdi zmdi-chevron-up"></i>
-        </span>
-    </div>
 
-    <!-- Modal1 -->
-    <div class="wrap-modal1 js-modal1 p-t-60 p-b-20">
-        <div class="overlay-modal1 js-hide-modal1"></div>
-
-        <div class="container">
-            <div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
-                <button class="how-pos3 hov3 trans-04 js-hide-modal1">
-                    <img src="{{asset('assets')}}/images/icons/icon-close.png" alt="CLOSE">
-                </button>
-
-                <div class="row">
-                    <div class="col-md-6 col-lg-7 p-b-30">
-                        <div class="p-l-25 p-r-30 p-lr-0-lg">
-                            <div class="wrap-slick3 flex-sb flex-w">
-                                <div class="wrap-slick3-dots"></div>
-                                <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
-
-                                <div class="slick3 gallery-lb">
-                                    <div class="item-slick3" data-thumb="{{asset('assets')}}/images/product-detail-01.jpg">
-                                        <div class="wrap-pic-w pos-relative">
-                                            <img src="{{asset('assets')}}/images/product-detail-01.jpg" alt="IMG-PRODUCT">
-
-                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-01.jpg">
-                                                <i class="fa fa-expand"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-slick3" data-thumb="{{asset('assets')}}/images/product-detail-02.jpg">
-                                        <div class="wrap-pic-w pos-relative">
-                                            <img src="{{asset('assets')}}/images/product-detail-02.jpg" alt="IMG-PRODUCT">
-
-                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{asset('assets')}}/images/product-detail-02.jpg">
-                                                <i class="fa fa-expand"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-slick3" data-thumb="{{asset('assets')}}/images/product-detail-03.jpg">
-                                        <div class="wrap-pic-w pos-relative">
-                                            <img src="{{asset('assets')}}/images/product-detail-03.jpg" alt="IMG-PRODUCT">
-
-                                            <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{asset('assets')}}/images/product-detail-03.jpg">
-                                                <i class="fa fa-expand"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <!--  -->
-                    <div class="flex-w flex-m p-l-100 p-t-40 respon7">
-                        <div class="flex-m bor9 p-r-10 m-r-11">
-                            <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
-                                <i class="zmdi zmdi-favorite"></i>
-                            </a>
-                        </div>
-
-                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-
-                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
-                            <i class="fa fa-twitter"></i>
-                        </a>
-
-                        <a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Google Plus">
-                            <i class="fa fa-google-plus"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
 
     <!--===============================================================================================-->
     <script src="{{asset('assets')}}/vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -646,6 +574,123 @@
     <script src="{{asset('assets')}}/vendor/bootstrap/js/bootstrap.min.js"></script>
     <!--===============================================================================================-->
     <script src="{{asset('assets')}}/vendor/select2/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.20/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        function deleteConfirmation($id) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            event.preventDefault();
+
+            var url = "{{route('buyer.product_remove_wishlist',['_id_'])}}";
+            var delete_url = url.replace(['_id_'], $id);
+
+            $.ajax({
+
+                url: delete_url,
+                type: 'DELETE',
+                dataType: 'json',
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Product removed from Wishlist successfully!',
+                    })
+                    window.location.reload();
+                }
+            });
+
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        $(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $("#wishlist").click(function(e) {
+                event.preventDefault();
+
+                var id = $("#id").val();
+                var url = "{{route('buyer.add_to_wishlist')}}";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        id: id,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response) {
+
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: '{{$item->name}} added in your wishlist!',
+
+                            })
+                            window.location.reload();
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong!',
+
+                            })
+                        }
+
+                    }
+                });
+            });
+
+            // $("#addCart").click(function(e) {
+                function addCart($id){
+                event.preventDefault();
+
+                
+                var pro_qty = $("#product_qty").val();
+                var id = $("#id").val();
+                var url = "{{route('buyer.add_to_cart', ['_id_'])}}";
+                $cart_url = url.replace(['_id_'], $id);
+
+                $.ajax({
+                    url: $cart_url,
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        pro_qty: pro_qty,
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        alert(response.message);
+                    }
+                });
+
+
+            }
+        });
+    </script>
+
+    <script>
+        $(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+
+        });
+    </script>
 
 
     <script>
@@ -658,31 +703,7 @@
     </script>
 
 
-<script type="text/javascript">
-        $(function() {
-            $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-            $('#wishlist_form').submit(function(e) {
-                event.preventDefault();
-                var id = $("#id").val();
-                console.log(id);
 
-                var url = "{{route('buyer.add_to_wishlist')}}";
-                $.ajax({
-                    url: url,
-                    method: "POST",
-                    data: $(this).serialize(),
-                    dataType: 'JSON',
-                    success: function(response) {
-                        alert(response.message);
-                    }
-                });
-            });
-        });
-    </script> 
 
 
 
@@ -721,26 +742,26 @@
             e.preventDefault();
         });
 
-        $('.js-addwish-b2').each(function() {
-            var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-            $(this).on('click', function() {
-                swal(nameProduct, "is added to wishlist !", "success");
+        // $('.js-addwish-b2').each(function() {
+        //     var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+        //     $(this).on('click', function() {
+        //         swal(nameProduct, "is added to wishlist !", "success");
 
-                $(this).addClass('js-addedwish-b2');
-                $(this).off('click');
-            });
-        });
+        //         $(this).addClass('js-addedwish-b2');
+        //         $(this).off('click');
+        //     });
+        // });
 
-        $('.js-addwish-detail').each(function() {
-            var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+        // $('.js-addwish-detail').each(function() {
+        //     var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
 
-            $(this).on('click', function() {
-                swal(nameProduct, "is added to wishlist !", "success");
+        //     $(this).on('click', function() {
+        //         swal(nameProduct, "is added to wishlist !", "success");
 
-                $(this).addClass('js-addedwish-detail');
-                $(this).off('click');
-            });
-        });
+        //         $(this).addClass('js-addedwish-detail');
+        //         $(this).off('click');
+        //     });
+        // });
 
         /*---------------------------------------------*/
 
@@ -771,7 +792,7 @@
     <!--===============================================================================================-->
     <script src="{{asset('assets')}}/js/main.js"></script>
 
-   
+
 </body>
 
 </html>

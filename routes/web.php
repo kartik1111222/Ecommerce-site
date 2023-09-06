@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Buyer\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Buyer\ProductController as buyerproductcontroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Buyer\ProductListController;
+use App\Http\Controllers\Buyer\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +54,15 @@ Route::prefix('Buyer')->name('buyer.')->group(function(){
 
       //product details
       Route::get('product_details/{id}', [buyerproductcontroller::class,'product_details'])->name('product_details');
-      Route::post('add_to_wishlist', [buyerproductcontroller::class, 'add_to_wishlist'])->name('add_to_wishlist');
+      Route::post('product_details/{id}', [CartController::class,'add_to_cart'])->name('add_to_cart');
+      
+      //wishlist
+      Route::get('wishlist', [WishlistController::class,'wishlist'])->name('wishlist');
+      Route::post('add_to_wishlist', [WishlistController::class, 'add_to_wishlist'])->name('add_to_wishlist');
+      Route::delete('remove_wishlist/{id}', [WishlistController::class, 'remove_wishlist'])->name('remove_wishlist');
+      Route::delete('product_remove_wishlist/{id}', [WishlistController::class, 'product_remove_wishlist'])->name('product_remove_wishlist');
+
+      //Cart
+      Route::get('cart', [CartController::class,'cart'])->name('cart');
     });
 });

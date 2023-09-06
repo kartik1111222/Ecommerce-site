@@ -8,23 +8,18 @@ use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class ProductController extends Controller
 {
-    public function product_details($id){
+    public function product_details($id)
+    {
         $item = Item::find($id);
-        return view('buyer.product_detail', compact('item'));
+        $count_wishlists = Wishlist::count();
+        $wishlist = Wishlist::pluck('item_id')->toArray();
+        return view('buyer.product_detail', compact('item', 'count_wishlists', 'wishlist'));
     }
 
-    public function add_to_wishlist(Request $request){
 
-          $item_id = $request->id;
-
-          $wishlist = new Wishlist();
-          $wishlist->item_id = $item_id;
-          $wishlist->user_id = Auth()->user()->id;
-          $wishlist->save();
-          return response()->json([
-           'message' => 'product added in wishlist'
-          ]);
-    }
+    
+   
 }

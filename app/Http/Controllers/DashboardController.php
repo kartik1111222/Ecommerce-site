@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Illuminate\Http\Request;
+use App\Models\Wishlist;
 
 class DashboardController extends Controller
 {
@@ -13,6 +14,9 @@ class DashboardController extends Controller
 
     public function buyer_dashboard(){
        $items = Item::all();
-        return view('buyer.dashboard', compact('items'));
+       $count_wishlists = Wishlist::count();
+       $wishlist = Wishlist::pluck('item_id')->toArray();
+       
+        return view('buyer.dashboard', compact('items', 'count_wishlists', 'wishlist'));
     }
 }

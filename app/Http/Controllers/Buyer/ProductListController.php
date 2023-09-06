@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Buyer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\Wishlist;
 
 class ProductListController extends Controller
 {
     public function all_products(){
         $items = Item::all();
-        return view('buyer.all_products', compact('items')); 
+        $wishlist = Wishlist::pluck('item_id')->toArray();
+        return view('buyer.all_products', compact('items', 'wishlist')); 
     }
 
     public function women_product(){
