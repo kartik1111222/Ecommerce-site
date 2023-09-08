@@ -379,17 +379,13 @@
                                                 <i class="fs-16 zmdi zmdi-plus"></i>
                                             </div>
                                         </div>
-
                                         <button onclick="addCart({{$item->id}})" type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
                                             Add to cart
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-
-                        <form action="" method="POST">
-                            @csrf
+                        
                             <input type="hidden" name="id" id="id" value="{{$item->id}}">
 
                             <div class="flex-w flex-m p-l-100 p-t-40 respon7">
@@ -651,9 +647,16 @@
                     }
                 });
             });
+            
 
-            // $("#addCart").click(function(e) {
-                function addCart($id){
+           
+               
+           
+        });
+    </script>
+
+    <script>
+       function addCart($id){
                 event.preventDefault();
 
                 
@@ -666,30 +669,37 @@
                     url: $cart_url,
                     type: 'POST',
                     data: {
-                        id: id,
+                        id: $id,
                         pro_qty: pro_qty,
                     },
                     dataType: 'json',
                     success: function(response) {
-                        alert(response.message);
+                        if (response) {
+
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: '{{$item->name}} added in cart!',
+
+                            })
+                           
+
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Something went wrong!',
+
+                            })
+                        }
+
                     }
                 });
 
 
             }
-        });
-    </script>
-
-    <script>
-        $(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-
-        });
+      
     </script>
 
 

@@ -253,51 +253,50 @@
 		</div>
 
 		<div class="row isotope-grid">
-			@foreach($items as $item)
-			<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
-				<!-- Block2 -->
-				<div class="block2">
-					<div class="block2-pic hov-img0">
-						<img src="{{ asset('assets/images/items/' . $item->image) }}" alt="IMG-PRODUCT">
+				@foreach($items as $item)
+				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+					<!-- Block2 -->
+					<div class="block2">
+						<div class="block2-pic hov-img0">
+							<img src="{{asset('assets/images/items/'.$item->image)}}" alt="IMG-PRODUCT">
 
-						<a href="{{route('buyer.product_details', $item->id)}}" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
-							Item Details
-						</a>
-					</div>
-
-					<div class="block2-txt flex-w flex-t p-t-14">
-						<div class="block2-txt-child1 flex-col-l ">
-							<a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-								{{$item->name}}
+							<a href="{{route('buyer.product_details', $item->id)}}" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
+								Item Details
 							</a>
-
-							<span class="stext-105 cl3">
-							{{$item->price}} ₹
-
-
-							</span>
 						</div>
 
-						<div class="block2-txt-child2 flex-r p-t-3">
-							<!-- <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-								<img class="icon-heart1 dis-block trans-04" src="{{asset('assets')}}/images/icons/icon-heart-01.png" alt="ICON">
-								<img class="icon-heart2 dis-block trans-04 ab-t-l" src="{{asset('assets')}}/images/icons/icon-heart-02.png" alt="ICON">
-							</a> -->
-						    @if(in_array($item->id, $wishlist) )
-                                <button onclick="deleteConfirmation({{$item->id}})" type="submit" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Remove from Wishlist">
-                                    <i class="zmdi zmdi-favorite" style='color: red'></i>
-                                </button>                                 
-                            @else
-                                <button onclick="addtoWishlist({{$item->id}})" type="submit" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
-                                    <i class="zmdi zmdi-favorite"></i>
-                                </button>
-                            @endif
+						<div class="block2-txt flex-w flex-t p-t-14">
+							<div class="block2-txt-child1 flex-col-l ">
+								<a href="product-detail.html" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+									{{$item->name}}
+								</a>
+
+								<span class="stext-105 cl3">
+									₹ {{$item->price}}
+
+								</span>
+							</div>
+							<button onclick="addCart({{$item->id}})" type="submit"><i class="fa fa-shopping-cart" style="font-size:24px;color:blue"></i></button>
+							<div class="block2-txt-child2 flex-r p-t-3">
+
+								@if(in_array($item->id, $wishlist) )
+								<button onclick="deleteConfirmation({{$item->id}})" type="submit" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Remove from Wishlist">
+									<i class="zmdi zmdi-favorite" style='color: red'></i>
+								</button>
+								@else
+								<button onclick="addtoWishlist({{$item->id}})" type="submit" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
+									<i class="zmdi zmdi-favorite"></i>
+								</button>
+								@endif
+
+							</div>
+
 						</div>
 					</div>
 				</div>
+				@endforeach
 			</div>
-			@endforeach
-		</div>
+
 
 		<!-- Load more -->
 		<div class="flex-c-m flex-w w-full p-t-45">
@@ -334,7 +333,7 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success!',
-                                text: '{{$item->name}} added in your wishlist!',
+                                text: 'Product added in your wishlist!',
                            
                             })
                             window.location.reload();
@@ -384,4 +383,56 @@
 		
        
     </script>
+
+<script>
+		function addCart($id) {
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+			event.preventDefault();
+
+
+			var pro_qty = $("#product_qty").val();
+			var id = $("#id").val();
+			var url = "{{route('buyer.add_to_cart', ['_id_'])}}";
+			$cart_url = url.replace(['_id_'], $id);
+
+			$.ajax({
+				url: $cart_url,
+				type: 'POST',
+				data: {
+					id: $id,
+					pro_qty: pro_qty,
+				},
+				dataType: 'json',
+				success: function(response) {
+					if (response) {
+
+
+						Swal.fire({
+							icon: 'success',
+							title: 'Success!',
+							text: 'Product added in cart succesfully!',
+
+						})
+
+
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error!',
+							text: 'Something went wrong!',
+
+						})
+					}
+
+				}
+			});
+
+
+		}
+	</script>
+
 @endsection

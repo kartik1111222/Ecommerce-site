@@ -13,4 +13,9 @@ class Item extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+
+    public function cart()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
