@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Buyer;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Item;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +15,14 @@ class CartController extends Controller
    {
       $user_id = Auth()->user()->id;
       $items = Cart::where('user_id',$user_id)->with('item')->get();
+
+     
+      $count_cart = Cart::count();
+      $count_wishlist = Wishlist::count();
+      $wishlist = Wishlist::pluck('item_id')->toArray();
+      $cart_items = Cart::all();
         
-      return view('buyer.cart', compact('items'));
+      return view('buyer.cart', compact('items', 'count_cart','count_wishlist','wishlist','cart_items'));
    }
 
    public function add_to_cart(Request $request, $id)
@@ -52,12 +59,29 @@ class CartController extends Controller
             ]);
 
          }
+   }
 
+   public function cart_item_delete($id){
+      
+      $item_delete = Cart::find($id);
+      
+      
+      if($item_delete != null){
          
+         $item_delete->delete();
+         
+         return response()->json([
+           'message' => 'Item removed from cart successfully!'
+         ]);
+      } 
+   }
 
-   
+   public function update_cart(Request $request, $id){
 
+     $data = $request->all();
+     dd($data);
 
-        
+     $update_cart = Cart::where('item_id',$id)->first();
+   //   $update_cart->product_qty = 
    }
 }

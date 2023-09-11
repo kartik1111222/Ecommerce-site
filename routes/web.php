@@ -50,7 +50,6 @@ Route::prefix('Buyer')->name('buyer.')->group(function(){
       Route::get('men_products', [ProductListController::class,'men_products'])->name('men_product');
       Route::get('watch_products', [ProductListController::class,'watch_products'])->name('watch_product');
       Route::get('shoes_products', [ProductListController::class,'shoes_products'])->name('shoes_product');
-      Route::get('bag_products', [ProductListController::class,'bag_product'])->name('bag_product');
 
       //product details
       Route::get('product_details/{id}', [buyerproductcontroller::class,'product_details'])->name('product_details');
@@ -64,5 +63,7 @@ Route::prefix('Buyer')->name('buyer.')->group(function(){
 
       //Cart
       Route::get('cart', [CartController::class,'cart'])->name('cart');
+      Route::delete('cart_item_delete/{id}', [CartController::class,'cart_item_delete'])->name('cart_item_delete');
+      Route::post('cart/{id}', [CartController::class, 'update_cart'])->name('update_cart');
     });
 });
