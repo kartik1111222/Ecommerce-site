@@ -244,6 +244,8 @@
 			<div class="row isotope-grid">
 				@foreach($items as $item)
 				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+				<input type="hidden" name="total_price" value="{{$item->price}}" id="total_price">
+
 					<!-- Block2 -->
 					<div class="block2">
 						<div class="block2-pic hov-img0">

@@ -14,6 +14,7 @@ class DashboardController extends Controller
 
     public function buyer_dashboard(){
        $items = Item::all();
+       dd($items);
        $count_wishlists = Wishlist::count();
        $wishlist = Wishlist::pluck('item_id')->toArray();
        

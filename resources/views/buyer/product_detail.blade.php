@@ -365,16 +365,18 @@
                         <form method="POST" action="">
                             @csrf
                             <input type="hidden" name="id" id="id" value="{{$item->id}}">
+                            <input type="hidden" name="total_price" value="{{$item->price}}" id="total_price">
                             <div class="p-t-33">
                                 <div class="flex-w flex-r-m p-b-10">
                                     <div class="size-204 flex-w flex-m respon6-next">
                                         <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                            
                                             <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
                                                 <i class="fs-16 zmdi zmdi-minus"></i>
                                             </div>
-
+                                            
                                             <input class="mtext-104 cl3 txt-center num-product" type="number" name="product-qty" value="1" id="product_qty">
-
+                                            
                                             <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                                 <i class="fs-16 zmdi zmdi-plus"></i>
                                             </div>
@@ -662,6 +664,7 @@
                 
                 var pro_qty = $("#product_qty").val();
                 var id = $("#id").val();
+                var total_price = $("#total_price").val();
                 var url = "{{route('buyer.add_to_cart', ['_id_'])}}";
                 $cart_url = url.replace(['_id_'], $id);
 
@@ -671,6 +674,7 @@
                     data: {
                         id: $id,
                         pro_qty: pro_qty,
+                        total_price: total_price
                     },
                     dataType: 'json',
                     success: function(response) {

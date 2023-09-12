@@ -64,6 +64,6 @@ Route::prefix('Buyer')->name('buyer.')->group(function(){
       //Cart
       Route::get('cart', [CartController::class,'cart'])->name('cart');
       Route::delete('cart_item_delete/{id}', [CartController::class,'cart_item_delete'])->name('cart_item_delete');
-      Route::post('cart/{id}', [CartController::class, 'update_cart'])->name('update_cart');
+      Route::post('update_cart', [CartController::class, 'update_cart'])->name('update_cart');
     });
 });

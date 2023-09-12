@@ -423,11 +423,7 @@
 				<a href="{{route('buyer.men_product')}}" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
 					Men
                 </a>
-
-				<a href="{{route('buyer.bag_product')}}" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
-					Bag
-                </a>
-
+             
 				<a href="{{route('buyer.shoes_product')}}" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5">
 					Shoes
 				</a>
@@ -653,8 +649,10 @@
 		</div>
 
 		<div class="row isotope-grid">
-				@foreach($items as $item)
+		@foreach($items as $item)
 				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+				<input type="hidden" name="total_price" value="{{$item->price}}" id="total_price">
+
 					<!-- Block2 -->
 					<div class="block2">
 						<div class="block2-pic hov-img0">
@@ -796,6 +794,7 @@
 
 			var pro_qty = $("#product_qty").val();
 			var id = $("#id").val();
+			var total_price = $("#total_price").val();
 			var url = "{{route('buyer.add_to_cart', ['_id_'])}}";
 			$cart_url = url.replace(['_id_'], $id);
 
@@ -805,6 +804,7 @@
 				data: {
 					id: $id,
 					pro_qty: pro_qty,
+					total_price: total_price
 				},
 				dataType: 'json',
 				success: function(response) {

@@ -408,6 +408,7 @@
 
 			var pro_qty = $("#product_qty").val();
 			var id = $("#id").val();
+			var total_price = $("#total_price").val();
 			var url = "{{route('buyer.add_to_cart', ['_id_'])}}";
 			$cart_url = url.replace(['_id_'], $id);
 
@@ -417,6 +418,7 @@
 				data: {
 					id: $id,
 					pro_qty: pro_qty,
+					total_price: total_price
 				},
 				dataType: 'json',
 				success: function(response) {

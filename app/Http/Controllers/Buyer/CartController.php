@@ -28,14 +28,17 @@ class CartController extends Controller
    public function add_to_cart(Request $request, $id)
    {
          $data = $request->all();
+         // dd($data);
          $unique_cart = Cart::where('item_id', $id)->first();
 
          if($unique_cart != null){
 
            $cart = Cart::where('item_id', $id)->first();
            $cart->item_id = $data['id'];
-         //   $newQuantity =  $cart->product_qty +  $data['pro_qty'];
+           //   $newQuantity =  $cart->product_qty +  $data['pro_qty'];
            $newQuantity =  isset($data['pro_qty']) ? $cart->product_qty +  $data['pro_qty']: $cart->product_qty + '1' ;
+           $newTotalprice = isset($data['pro_qty']) ? $cart->total_price +  $data['pro_qty'] * $data['total_price']: $cart->total_price +  '1' * $data['total_price']; 
+           $cart->total_price = $newTotalprice;
            $cart->product_qty = $newQuantity;
            $cart->user_id  = Auth()->user()->id;
            $cart->save();
@@ -51,6 +54,7 @@ class CartController extends Controller
   
             $cart->item_id = $data['id'];
             $cart->product_qty = isset($data['pro_qty']) ? $data['pro_qty']: '1' ;
+            $cart->total_price = isset($data['pro_qty']) ? $data['pro_qty']  *  $data['total_price']: '1'  *  $data['total_price'];
             $cart->user_id  = Auth()->user()->id;
             $cart->save();
    
@@ -76,12 +80,18 @@ class CartController extends Controller
       } 
    }
 
-   public function update_cart(Request $request, $id){
-
-     $data = $request->all();
-     dd($data);
+   public function update_cart(Request $request){
+    $data = $request->all();   
+      dd($data);
+     $id = $data['id'];
 
      $update_cart = Cart::where('item_id',$id)->first();
-   //   $update_cart->product_qty = 
+     $update_cart->product_qty = $data['quantity'];
+     $update_cart->total_price = $data['quantity'] * $data['price']; 
+     $update_cart->save();
+     return response()->json([
+      'message' => 'Quantity updated successfully!'
+     ]);
    }
+
 }

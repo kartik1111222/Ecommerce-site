@@ -31,25 +31,22 @@
 								<td class="column-4">
 
 									<input type="hidden" name="id" id="item_id" value="{{$item->item->id}}">
+									<input type="hidden" name="price" id="price" value="{{$item->item->price}}">
 
 									<div class="wrap-num-product flex-w m-l-auto m-r-0">
 										<div id="decrement_btn" class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
 											<i class="fs-16 zmdi zmdi-minus"></i>
-											<!-- <span  class="input-group-text">-</span> -->
 										</div>
 
 										<input class="mtext-104 cl3 txt-center num-product" type="number" name="quantity" value="{{$item->product_qty}}" id="qty">
-										<input type="hidden" name="price" id="price" value="{{$item->item->price}}">
-
-										<!-- <input type="hidden" name="id" id="id" value="{{$item->item_id}}"> -->
-
-										<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-											<!-- <i class="fs-16 zmdi zmdi-plus"></i> -->
-											<span class="input-group-text increment_btn">+</span>
+										<div id="increment_btn" class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+											<i class="fs-16 zmdi zmdi-plus"></i>
 										</div>
+
+										
 									</div>
 								</td>
-								<td class="column-5">₹ 36.00</td>
+								<td class="column-5">₹ {{$item->total_price}}</td>
 								<td class="column-6">
 									<button onclick="deleteProduct({{$item->id}})" class="btn btn-danger">Remove</button>
 								</td>
@@ -164,34 +161,75 @@
 
 @push('scripts')
 <script>
-	// $(function() {
-		$("#decrement_btn").click(function() {
+	$("#decrement_btn").click(function() {
 
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				}
-			});
-			event.preventDefault();
-            var id = $("#item_id").val(); 
-			var url = "{{route('buyer.update_cart',['_id_'])}}";
-			var update_url = url.replace(['_id_'], id);
-
-			$.ajax({
-				url: update_url,
-				type: 'POST',
-				dataType: 'json',
-				success: function(response) {
-					Swal.fire({
-						icon: 'success',
-						title: 'Success!',
-						text: 'Cart quantity updated successfully!',
-					})
-					window.location.reload();
-				}
-			})
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
 		});
-	// });
+		event.preventDefault();
+		var item_id = $("#item_id").val();
+		var price = $("#price").val();
+		var quantity = $("#qty").val();
+
+		var url = "{{route('buyer.update_cart')}}";
+
+
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: {
+				id: item_id,
+				price: price,
+				quantity: quantity++
+			},
+			dataType: 'json',
+			success: function(response) {
+				Swal.fire({
+					icon: 'success',
+					title: 'Success!',
+					text: 'Cart quantity updated successfully!',
+				})
+				// window.location.reload();
+			}
+		})
+	});
+
+	$("#increment_btn").click(function() {
+
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		event.preventDefault();
+		var item_id = $("#item_id").val();
+		var price = $("#price").val();
+		var quantity = $("#qty").val();
+
+		var url = "{{route('buyer.update_cart')}}";
+
+
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: {
+				id: item_id,
+				price: price,
+				quantity: quantity
+			},
+			dataType: 'json',
+			success: function(response) {
+				Swal.fire({
+					icon: 'success',
+					title: 'Success!',
+					text: 'Cart quantity updated successfully!',
+				})
+				// window.location.reload();
+			}
+		})
+	});
 </script>
 <script>
 	function deleteProduct($id) {

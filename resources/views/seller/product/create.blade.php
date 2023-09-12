@@ -10,7 +10,7 @@
         <h2>Add Items:</h2>
 
         <label>Product Image:</label>
-        <input type="file" name="image" class="form-control"><br>
+        <input type="file" name="images[]" class="form-control" multiple><br>
 
         <!-- <label>Item Type:</label> -->
         <!-- <label for="html">New Type</label>
