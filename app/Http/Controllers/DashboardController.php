@@ -13,8 +13,10 @@ class DashboardController extends Controller
     }
 
     public function buyer_dashboard(){
-       $items = Item::all();
-       dd($items);
+    //    $items = Item::all();
+       $items = Item::with('image')->get();
+
+    //    dd($items);
        $count_wishlists = Wishlist::count();
        $wishlist = Wishlist::pluck('item_id')->toArray();
        

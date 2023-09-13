@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Buyer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Wishlist;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,8 +12,7 @@ class WishlistController extends Controller
 {
     public function wishlist(){
         $user_id = Auth()->user()->id;
-        $items = Wishlist::where('user_id',$user_id)->with('item')->get();
-        
+        $items = Wishlist::with('item', 'image')->get();
         return view('buyer.wishlist', compact('items'));
     }
 

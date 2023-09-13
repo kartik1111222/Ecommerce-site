@@ -21,20 +21,22 @@ class CartController extends Controller
       $count_wishlist = Wishlist::count();
       $wishlist = Wishlist::pluck('item_id')->toArray();
       $cart_items = Cart::all();
-        
+      $pro_image = Item::with('image', 'cart')->get();
+     
+
       return view('buyer.cart', compact('items', 'count_cart','count_wishlist','wishlist','cart_items'));
    }
 
    public function add_to_cart(Request $request, $id)
    {
          $data = $request->all();
-         // dd($data);
-         $unique_cart = Cart::where('item_id', $id)->first();
+         
+         $unique_cart = Cart::where('item_id', $data['item_id'])->first();
 
          if($unique_cart != null){
 
            $cart = Cart::where('item_id', $id)->first();
-           $cart->item_id = $data['id'];
+           $cart->item_id = $data['item_id'];
            //   $newQuantity =  $cart->product_qty +  $data['pro_qty'];
            $newQuantity =  isset($data['pro_qty']) ? $cart->product_qty +  $data['pro_qty']: $cart->product_qty + '1' ;
            $newTotalprice = isset($data['pro_qty']) ? $cart->total_price +  $data['pro_qty'] * $data['total_price']: $cart->total_price +  '1' * $data['total_price']; 
@@ -52,7 +54,7 @@ class CartController extends Controller
              
             $cart = new Cart();
   
-            $cart->item_id = $data['id'];
+            $cart->item_id = $data['item_id'];
             $cart->product_qty = isset($data['pro_qty']) ? $data['pro_qty']: '1' ;
             $cart->total_price = isset($data['pro_qty']) ? $data['pro_qty']  *  $data['total_price']: '1'  *  $data['total_price'];
             $cart->user_id  = Auth()->user()->id;
@@ -82,13 +84,22 @@ class CartController extends Controller
 
    public function update_cart(Request $request){
     $data = $request->all();   
-      dd($data);
+      // dd($data);
      $id = $data['id'];
 
      $update_cart = Cart::where('item_id',$id)->first();
-     $update_cart->product_qty = $data['quantity'];
-     $update_cart->total_price = $data['quantity'] * $data['price']; 
-     $update_cart->save();
+
+
+     if($data['quantity'] < $update_cart->product_qty){
+      $update_cart->product_qty = $data['quantity'] - 1;
+      $update_cart->total_price =  $update_cart->product_qty * $data['price']; 
+      $update_cart->save();
+     }else{
+      $update_cart->product_qty = $data['quantity'] + 1;
+      $update_cart->total_price =  $update_cart->product_qty * $data['price']; 
+      $update_cart->save();
+     }
+    
      return response()->json([
       'message' => 'Quantity updated successfully!'
      ]);

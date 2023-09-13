@@ -14,7 +14,17 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
+        $items = Item::with('image')->get();
+        // dd($items);
+        
+        // foreach($items as $item){
+       
+        //     $data = $items->image->images;
+        // }
+        // // dd($data);
+        // $image = explode(",", $data);
+        // dd($image[0]);
+       
         return view('seller.product.index', compact('items'));
     }
 
@@ -23,6 +33,7 @@ class ProductController extends Controller
      */
     public function create()
     {
+        // dd(Item::with(['images'])->find(1));
         return view('seller.product.create');
     }
 
@@ -31,7 +42,9 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        
         $data = $request->all();
+        
 
         $item = new Item();
         $item->name = $data['name'];
@@ -45,27 +58,48 @@ class ProductController extends Controller
         $item->save();
         $id = $item->id;
 
-        $image = new Image();
+        
 
         $image_data = [];
-
-
         if ($request->has('images')) {
             foreach ($request->images as $image) {
                 $name = time() . rand(1, 100) . '.' . $image->extension();
                 $path = public_path() . '/assets/images/items';
                 $image->move($path, $name);
                 $image_data[] = $name;
-                
             }
-            $image->images =  implode(",", $image_data);
         }
+
+        $image = new Image();
+        $image->images =  implode(",", $image_data);
         $image->item_id = $id;
-        // dd($image);
         $image->save();
         return response()->json([
-            'message' => 'Item added successfully!'
+                'message' => 'Item added successfully!'
         ]);
+
+
+
+
+
+        // dd($image);
+
+        // $hotelImages = $request->file('images', []);
+        // foreach ($hotelImages as $image) {
+        //     $ext = $image->extension();
+        //     $imageName = date('YmdHis') . '_' . uniqid() . '.' . $ext;
+
+        //     $image->move(storage_path('app/public/hotel_image/'), $imageName);
+
+           
+        // }
+        // $hotelPhoto = new Image();
+        // $hotelPhoto->item_id = $id;
+        // $hotelPhoto->images = $imageName;
+        // $hotelPhoto->save();
+        // return response()->json([
+        //     'message' => 'Item added successfully!'
+        // ]);
     }
 
     /**

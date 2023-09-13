@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Cart extends Model
 {
@@ -15,6 +16,12 @@ class Cart extends Model
 
     public function item(){
         return $this->belongsTo(Item::class);
+    }
+
+    public function image(): HasOne
+    {
+        return $this->hasOne(image::class, 'item_id', 'item_id');
+
     }
 
 }

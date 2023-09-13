@@ -20,7 +20,7 @@ class ProductListController extends Controller
     }
 
     public function women_product(){
-        $items = Item::where('item_type','1')->get();
+        $items = Item::with('image')->where('item_type','1')->get();
         $count_cart = Cart::count();
         $count_wishlist = Wishlist::count();
         $cart_items = Cart::all();
@@ -29,7 +29,7 @@ class ProductListController extends Controller
     }
 
     public function men_products(){
-        $items = Item::where('item_type','0')->get();
+        $items = Item::with('image')->where('item_type','0')->get();
         $count_cart = Cart::count();
         $count_wishlist = Wishlist::count();
         $cart_items = Cart::all();
@@ -39,7 +39,7 @@ class ProductListController extends Controller
     }
 
     public function watch_products(){
-        $items = Item::where('item_type','3')->get();
+        $items = Item::with('image')->where('item_type','3')->get();
         $count_cart = Cart::count();
         $count_wishlist = Wishlist::count();
         $cart_items = Cart::all();
@@ -50,7 +50,7 @@ class ProductListController extends Controller
     }
 
     public function shoes_products(){
-        $items = Item::where('item_type','2')->get();
+        $items = Item::with('image')->where('item_type','2')->get();
         $count_cart = Cart::count();
         $count_wishlist = Wishlist::count();
         $wishlist = Wishlist::pluck('item_id')->toArray();

@@ -332,13 +332,13 @@
                     <div class="p-l-25 p-r-30 p-lr-0-lg">
                         <div class="wrap-slick3 flex-sb flex-w">
                             <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
-
+                           @php( $image = explode(",",$item->image->images) )
                             <div class="slick3 gallery-lb">
                                 <div class="item-slick3">
                                     <div class="wrap-pic-w pos-relative">
-                                        <img src="{{asset('assets/images/items/'. $item->image)}}" alt="IMG-PRODUCT">
+                                        <img src="{{asset('assets/images/items/'. $image[0])}}" alt="IMG-PRODUCT">
 
-                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{asset('assets/images/items/'. $item->image)}}">
+                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="{{asset('assets/images/items/'. $image[1])}}">
                                             <i class="fa fa-expand"></i>
                                         </a>
                                     </div>

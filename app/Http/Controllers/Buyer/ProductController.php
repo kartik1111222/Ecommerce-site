@@ -13,7 +13,9 @@ class ProductController extends Controller
 {
     public function product_details($id)
     {
-        $item = Item::find($id);
+        // $item = Item::find($id);
+       $item = Item::with('image')->find($id);
+// dd($items);
         $count_wishlists = Wishlist::count();
         $wishlist = Wishlist::pluck('item_id')->toArray();
         return view('buyer.product_detail', compact('item', 'count_wishlists', 'wishlist'));

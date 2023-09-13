@@ -396,59 +396,7 @@
 		}
 	</script>
 
-	<script>
-		function addCart($id) {
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-				}
-			});
-			event.preventDefault();
-
-
-			var pro_qty = $("#product_qty").val();
-			var id = $("#id").val();
-			var total_price = $("#total_price").val();
-			var url = "{{route('buyer.add_to_cart', ['_id_'])}}";
-			$cart_url = url.replace(['_id_'], $id);
-
-			$.ajax({
-				url: $cart_url,
-				type: 'POST',
-				data: {
-					id: $id,
-					pro_qty: pro_qty,
-					total_price: total_price
-				},
-				dataType: 'json',
-				success: function(response) {
-					if (response) {
-
-
-						Swal.fire({
-							icon: 'success',
-							title: 'Success!',
-							text: 'Product added in cart successfully!',
-
-						})
-
-
-					} else {
-						Swal.fire({
-							icon: 'error',
-							title: 'Error!',
-							text: 'Something went wrong!',
-
-						})
-					}
-					window.location.reload();
-
-				}
-			});
-
-
-		}
-	</script>
+	
 
 	<script>
 		$(".js-select2").each(function() {

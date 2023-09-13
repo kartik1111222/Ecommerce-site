@@ -334,12 +334,14 @@
 
 			<div class="row isotope-grid">
 				@foreach($items as $item)
+				@php( $image = explode(",", $item->image->images) )
 
+				
 				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
 					<!-- Block2 -->
 					<div class="block2">
 						<div class="block2-pic hov-img0">
-							<img src="{{asset('assets/images/items/'.$item->item->image)}}" alt="IMG-PRODUCT">
+							<img src="{{asset('assets/images/items/'.$image[0])}}" alt="IMG-PRODUCT">
 
 							<a href="{{route('buyer.product_details', $item->item->id)}}" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
 								Item Details

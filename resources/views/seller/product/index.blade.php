@@ -17,13 +17,17 @@
     <th>Action</th>
   </tr>
   @foreach($items as $item)
+
+  @php( $image = explode(",",$item->image->images) )
+
+  
   <tr>
     <td>{{$item->id}}</td>
     <td>{{$item->name}}</td>
     <td>{{$item->shape}}</td>
     <td>{{$item->price}} ₹</td>
     <td>
-      <img src="{{ asset('assets/images/items/'.$item->image) }}" style="height: 100px;width:100px;">
+      <img src="{{ asset('assets/images/items/'.$image[0]) }}" style="height: 100px;width:100px;">
     </td>
     <td>
       <a href="{{route('seller.product.edit',$item->id)}}" class="btn btn-primary">Edit</a>
